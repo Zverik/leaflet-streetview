@@ -6,7 +6,7 @@ focused on the centre of the map. Just do:
 
     L.streetView().addTo(map);
 
-Check out [a demo here](http://zverik.github.io/leaflet-streetview/).
+Check out [a demo here](https://zverik.github.io/leaflet-streetview/index.html).
 
 If you need to specify the focus point, instead of it being in the centre, use
 `fixCoord(latlon)` method, and `releaseCoord()` to continue tracking the map.
