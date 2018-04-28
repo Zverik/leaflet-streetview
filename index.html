@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Street View Providers Demo</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
+    <script src="StreetViewButtons.js"></script>
+    <style>html,body,#map { margin: 0; height: 100%; }</style>
+  </head>
+  <body>
+    <div id="map"></div>
+  <script type="text/javascript">
+    // Create a map
+    var map = L.map('map').setView([55.73801, 37.62599], 17);
+    // Add an OpenStreetMap tile layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+    // Add the Street View buttons in the top left corner
+    L.streetView({ position: 'topleft' }).addTo(map);
+    // Add a marker to the centre of the map
+    var marker = L.marker(map.getCenter()).addTo(map);
+    // Make sure the marker stays in the centre when the map is moved
+    map.on('move', function() { marker.setLatLng(map.getCenter()); });
+  </script>
+  </body>
+</html>
