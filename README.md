@@ -14,6 +14,7 @@ If you need to specify the focus point, instead of it being in the centre, use
 Providers currently supported:
 
 * Google Street View
+* Bing StreetSide
 * Yandex Panoramas (for Russia and neighbouring countries)
 * MosAtlas (for Moscow, Russia)
 
