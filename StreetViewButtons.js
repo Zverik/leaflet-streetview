@@ -3,7 +3,8 @@ L.StreetView = L.Control.extend({
     google: true,
     bing: true,
     yandex: true,
-    mapillary: false,
+    mapillary: true,
+    mapillaryId: null,
     mosatlas: true,
   },
 
@@ -16,8 +17,8 @@ L.StreetView = L.Control.extend({
     ['yandex', 'ЯП', 'Yandex Panoramas',
       L.latLngBounds([[35.6, 18.5], [72, 180]]),
       'https://yandex.ru/maps/?panorama%5Bpoint%5D={lon},{lat}'],
-    ['mapillary', 'Mpl', 'Mapillary Photos', false,
-      'https://www.mapillary.com/app/?lat={lat}&lng={lon}&z=17&focus=photo'],
+    ['mapillary', 'Mplr', 'Mapillary Photos', false,
+      'https://a.mapillary.com/v3/images?client_id={id}&closeto={lon},{lat}&lookat={lon},{lat}'],
     ['mosatlas', 'Мос', 'Панорамы из Атласа Москвы',
       L.latLngBounds([[55.113, 36.708], [56.041, 38]]),
       'http://atlas.mos.ru/?lang=ru&z=9&ll={lon}%2C{lat}&pp={lon}%2C{lat}'],
@@ -51,6 +52,8 @@ L.StreetView = L.Control.extend({
   _addProvider: function(provider) {
     if (!this.options[provider[0]])
       return;
+    if (provider[0] == 'mapillary' && !this.options.mapillaryId)
+      return;
     var button = L.DomUtil.create('a');
     button.innerHTML = provider[1];
     button.title = provider[2];
@@ -60,6 +63,27 @@ L.StreetView = L.Control.extend({
     button.target = 'streetview';
     button.style.padding = '0 8px';
     button.style.width = 'auto';
+
+    // Some buttons require complex logic
+    if (provider[0] == 'mapillary') {
+      button._needUrl = false;
+      L.DomEvent.on(button, 'click', function(e) {
+        if (button._href) {
+          this._ajaxRequest(
+            button._href.replace(/{id}/, this.options.mapillaryId),
+            function(data) {
+              if (data && data.features && data.features[0].properties) {
+                var photoKey = data.features[0].properties.key,
+                    url = 'https://www.mapillary.com/map/im/{key}'.replace(/{key}/, photoKey);
+                window.open(url, button.target);
+              }
+            }
+          );
+        }
+        return L.DomEvent.preventDefault(e);
+      }, this);
+    } else
+      button._needUrl = true;
 
     // Overriding some of the leaflet styles
     button.style.display = 'inline-block';
@@ -90,8 +114,25 @@ L.StreetView = L.Control.extend({
       tmpl = tmpl
         .replace(/{lon}/g, L.Util.formatNum(center.lng, 6))
         .replace(/{lat}/g, L.Util.formatNum(center.lat, 6));
-      b.href = tmpl;
+      if (b._needUrl)
+        b.href = tmpl;
+      else
+        b._href = tmpl;
     }
+  },
+
+  _ajaxRequest: function(url, callback) {
+    if (window.XMLHttpRequest === undefined)
+      return;
+    var req = new XMLHttpRequest();
+    req.open("GET", url);
+    req.onreadystatechange = function() {
+      if (req.readyState === 4 && req.status == 200) {
+        var data = (JSON.parse(req.responseText));
+        callback(data);
+      }
+    };
+    req.send();
   }
 });
 
