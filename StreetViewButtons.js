@@ -5,7 +5,7 @@ L.StreetView = L.Control.extend({
     yandex: true,
     mapillary: true,
     mapillaryId: null,
-    mosatlas: true,
+    mosatlas: true
   },
 
   providers: [
