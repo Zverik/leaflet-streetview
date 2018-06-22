@@ -17,6 +17,8 @@ Providers currently supported:
 * Bing StreetSide
 * Yandex Panoramas (for Russia and neighbouring countries)
 * MosAtlas (for Moscow, Russia)
+* Mapillary
+* OpenStreetCam
 
 Please make a pull request if you know an URL template for another provider.
 

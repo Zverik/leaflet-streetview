@@ -5,6 +5,7 @@ L.StreetView = L.Control.extend({
     yandex: true,
     mapillary: true,
     mapillaryId: null,
+    openstreetcam: true,
     mosatlas: true
   },
 
@@ -19,6 +20,8 @@ L.StreetView = L.Control.extend({
       'https://yandex.ru/maps/?panorama%5Bpoint%5D={lon},{lat}'],
     ['mapillary', 'Mplr', 'Mapillary Photos', false,
       'https://a.mapillary.com/v3/images?client_id={id}&closeto={lon},{lat}&lookat={lon},{lat}'],
+    ['openstreetcam', 'OSC', 'OpenStreetCam', false,
+      'lat={lat}&lng={lon}&distance=50'],
     ['mosatlas', 'Мос', 'Панорамы из Атласа Москвы',
       L.latLngBounds([[55.113, 36.708], [56.041, 38]]),
       'http://atlas.mos.ru/?lang=ru&z=9&ll={lon}%2C{lat}&pp={lon}%2C{lat}'],
@@ -82,6 +85,24 @@ L.StreetView = L.Control.extend({
         }
         return L.DomEvent.preventDefault(e);
       }, this);
+    } else if (provider[0] == 'openstreetcam') {
+      button._needUrl = false;
+      L.DomEvent.on(button, 'click', function(e) {
+        if (button._href) {
+          this._ajaxRequest(
+            'http://openstreetcam.org/nearby-tracks',
+            function(data) {
+              if (data && data.osv && data.osv.sequences) {
+                var seq = data.osv.sequences[0],
+                    url = 'https://www.openstreetcam.org/details/'+seq.sequence_id+'/'+seq.sequence_index;
+                window.open(url, button.target);
+              }
+            },
+            button._href
+          );
+        }
+        return L.DomEvent.preventDefault(e);
+      }, this);
     } else
       button._needUrl = true;
 
@@ -121,18 +142,20 @@ L.StreetView = L.Control.extend({
     }
   },
 
-  _ajaxRequest: function(url, callback) {
+  _ajaxRequest: function(url, callback, post_data) {
     if (window.XMLHttpRequest === undefined)
       return;
     var req = new XMLHttpRequest();
-    req.open("GET", url);
+    req.open(post_data ? 'POST' : "GET", url);
+    if (post_data)
+      req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     req.onreadystatechange = function() {
       if (req.readyState === 4 && req.status == 200) {
         var data = (JSON.parse(req.responseText));
         callback(data);
       }
     };
-    req.send();
+    req.send(post_data);
   }
 });
 
