@@ -18,8 +18,8 @@ L.StreetView = L.Control.extend({
     ['yandex', 'ЯП', 'Yandex Panoramas',
       L.latLngBounds([[35.6, 18.5], [72, 180]]),
       'https://yandex.ru/maps/?panorama%5Bpoint%5D={lon},{lat}'],
-    ['mapillary', 'Mplr', 'Mapillary Photos', false,
-      'https://a.mapillary.com/v3/images?client_id={id}&closeto={lon},{lat}&lookat={lon},{lat}'],
+    ['mapillary', 'Mplr', 'Mapillary Photos', false, 
+	'https://graph.mapillary.com/images?access_token={id}&bbox={lon1},{lat1},{lon2},{lat2}&limit=10'],
     ['openstreetcam', 'OSC', 'OpenStreetCam', false,
       'lat={lat}&lng={lon}&distance=50'],
     ['mosatlas', 'Мос', 'Панорамы из Атласа Москвы',
@@ -74,12 +74,20 @@ L.StreetView = L.Control.extend({
         if (button._href) {
           this._ajaxRequest(
             button._href.replace(/{id}/, this.options.mapillaryId),
-            function(data) {
-              if (data && data.features && data.features[0].properties) {
-                var photoKey = data.features[0].properties.key,
-                    url = 'https://www.mapillary.com/map/im/{key}'.replace(/{key}/, photoKey);
-                window.open(url, button.target);
-              }
+            function(data) {            
+		if (data.data[0]) {
+			var photoKey = data.data[0].id,	
+			url = 'https://www.mapillary.com/embed?image_key={key}&style=classic&focus=photo'.replace(/{key}/, photoKey);
+                	window.open(url, button.target);
+              	}			
+		else {
+			alert("No Mapillary photos found within 20 m of this location");
+			// less restrictive
+			/*lng1 = map.getCenter().lng;
+			lat1 = map.getCenter().lat;
+			url1 = 'https://www.mapillary.com/app/?lat={lat}&lng={lon}&z=18'.replace(/{lon}/g, L.Util.formatNum(lng1, 6)).replace(/{lat}/g, L.Util.formatNum(lat1, 6));
+			window.open(url1 , button.target);*/				
+		}  
             }
           );
         }
