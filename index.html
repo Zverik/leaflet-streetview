@@ -16,7 +16,7 @@
     // Add an OpenStreetMap tile layer
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
     // Add the Street View buttons in the top left corner
-    // (Please get your own acces token on https://www.mapillary.com/app/settings/developers)
+    // Please get your own acces token on https://www.mapillary.com/dashboard/developers ("Register application")
     L.streetView({ position: 'topleft', mapillaryId: 'RC1ZRTBfaVlhWmJmUGVqRk5CYnAxQTpmMGE3OTU0MzM0MTljZTA4' }).addTo(map);
     // Add a marker to the centre of the map
     var marker = L.marker(map.getCenter()).addTo(map);
