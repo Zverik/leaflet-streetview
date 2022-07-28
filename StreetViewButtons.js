@@ -77,18 +77,27 @@ L.StreetView = L.Control.extend({
         if (button._href) {
           this._ajaxRequest(
             button._href.replace(/{id}/, this.options.mapillaryId),
-            function(data) {
-              if (data && data.features && data.features[0].properties) {
-                var photoKey = data.features[0].properties.key,
-                    url = 'https://www.mapillary.com/map/im/{key}'.replace(/{key}/, photoKey);
+            function(data) {            
+			  if (data.data[0]) {
+				var photoKey = data.data[0].id,	
+				url = 'https://www.mapillary.com/embed?image_key={key}&style=classic&focus=photo'.replace(/{key}/, photoKey);
                 window.open(url, button.target);
-              }
+              }			
+			  else {
+				alert("No Mapillary photos found within 20 m of this location");
+				// less restrictive
+				/*lng1 = map.getCenter().lng;
+				lat1 = map.getCenter().lat;
+				url2 = 'https://www.mapillary.com/app/?lat={lat}&lng={lon}&z=18'.replace(/{lon}/g, L.Util.formatNum(lng1, 6)).replace(/{lat}/g, L.Util.formatNum(lat1, 6));
+				window.open(url2 , button.target);*/				
+			  }  
             }
           );
         }
         return L.DomEvent.preventDefault(e);
       }, this);
-    } else if (provider[0] == 'openstreetcam') {
+    }
+	else if (provider[0] == 'openstreetcam') {
       button._needUrl = false;
       L.DomEvent.on(button, 'click', function(e) {
         if (button._href) {
