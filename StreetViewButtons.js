@@ -142,14 +142,14 @@ L.StreetView = L.Control.extend({
         return;
       }
       last = b;
-
       var tmpl = b._template;
-	  var latitude1 = center.lat - 0.0002;
-	  var longitude1 = center.lng - 0.0002;
-	  var latitude2 = center.lat + 0.0002;
-	  var longitude2 = center.lng + 0.0002;
+
 	  if (this._buttons[i].title == 'Mapillary Photos') {
-			tmpl = tmpl
+	  	var latitude1 = center.lat - 0.0002;
+		var longitude1 = center.lng - 0.0002;
+		var latitude2 = center.lat + 0.0002;
+		var longitude2 = center.lng + 0.0002;
+		tmpl = tmpl
 			.replace(/{lon1}/g, L.Util.formatNum(longitude1, 6))
 			.replace(/{lat1}/g, L.Util.formatNum(latitude1, 6))
 			.replace(/{lon2}/g, L.Util.formatNum(longitude2, 6))
