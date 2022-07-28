@@ -1,6 +1,3 @@
-// Please get your own mapillary access_token 
-// L.streetView({position: 'topleft', mapillaryId: {acces_token}}).addTo(map);
-																	    
 L.StreetView = L.Control.extend({
   options: {
     google: true,
@@ -96,8 +93,7 @@ L.StreetView = L.Control.extend({
         }
         return L.DomEvent.preventDefault(e);
       }, this);
-    }
-	else if (provider[0] == 'openstreetcam') {
+    } else if (provider[0] == 'openstreetcam') {
       button._needUrl = false;
       L.DomEvent.on(button, 'click', function(e) {
         if (button._href) {
@@ -147,7 +143,6 @@ L.StreetView = L.Control.extend({
       tmpl = tmpl
         .replace(/{lon}/g, L.Util.formatNum(center.lng, 6))
         .replace(/{lat}/g, L.Util.formatNum(center.lat, 6));
-
       if (b._needUrl)
         b.href = tmpl;
       else
