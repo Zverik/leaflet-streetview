@@ -77,19 +77,19 @@ L.StreetView = L.Control.extend({
           this._ajaxRequest(
             button._href.replace(/{id}/, this.options.mapillaryId),
             function(data) {            
-			  if (data.data[0]) {
-				var photoKey = data.data[0].id,	
-				url = 'https://www.mapillary.com/embed?image_key={key}&style=classic&focus=photo'.replace(/{key}/, photoKey);
-                window.open(url, button.target);
-              }			
-			  else {
-				alert("No Mapillary photos found within 20 m of this location");
-				// less restrictive
-				/*lng1 = map.getCenter().lng;
-				lat1 = map.getCenter().lat;
-				url2 = 'https://www.mapillary.com/app/?lat={lat}&lng={lon}&z=18'.replace(/{lon}/g, L.Util.formatNum(lng1, 6)).replace(/{lat}/g, L.Util.formatNum(lat1, 6));
-				window.open(url2 , button.target);*/				
-			  }  
+		if (data.data[0]) {
+			var photoKey = data.data[0].id,	
+			url = 'https://www.mapillary.com/embed?image_key={key}&style=classic&focus=photo'.replace(/{key}/, photoKey);
+                	window.open(url, button.target);
+              	}			
+		else {
+			alert("No Mapillary photos found within 20 m of this location");
+			// less restrictive
+			/*lng1 = map.getCenter().lng;
+			lat1 = map.getCenter().lat;
+			url2 = 'https://www.mapillary.com/app/?lat={lat}&lng={lon}&z=18'.replace(/{lon}/g, L.Util.formatNum(lng1, 6)).replace(/{lat}/g, L.Util.formatNum(lat1, 6));
+			window.open(url2 , button.target);*/				
+		}  
             }
           );
         }
