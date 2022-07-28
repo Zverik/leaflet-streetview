@@ -141,9 +141,6 @@ L.StreetView = L.Control.extend({
         this._container.removeChild(b);
         return;
       }
-      last = b;
-      var tmpl = b._template;
-
 	  if (this._buttons[i].title == 'Mapillary Photos') {
 	  	var latitude1 = center.lat - 0.0002;
 		var longitude1 = center.lng - 0.0002;
