@@ -88,8 +88,8 @@ L.StreetView = L.Control.extend({
 			// less restrictive
 			/*lng1 = map.getCenter().lng;
 			lat1 = map.getCenter().lat;
-			url2 = 'https://www.mapillary.com/app/?lat={lat}&lng={lon}&z=18'.replace(/{lon}/g, L.Util.formatNum(lng1, 6)).replace(/{lat}/g, L.Util.formatNum(lat1, 6));
-			window.open(url2 , button.target);*/				
+			url1 = 'https://www.mapillary.com/app/?lat={lat}&lng={lon}&z=18'.replace(/{lon}/g, L.Util.formatNum(lng1, 6)).replace(/{lat}/g, L.Util.formatNum(lat1, 6));
+			window.open(url1 , button.target);*/				
 		}  
             }
           );
