@@ -1,3 +1,7 @@
+/*  
+	// Please get your own mapillary access_token 
+    L.streetView({position: 'topleft', mapillaryId: {acces_token}}).addTo(map);
+*/																	    
 L.StreetView = L.Control.extend({
   options: {
     google: true,
@@ -18,8 +22,7 @@ L.StreetView = L.Control.extend({
     ['yandex', 'ЯП', 'Yandex Panoramas',
       L.latLngBounds([[35.6, 18.5], [72, 180]]),
       'https://yandex.ru/maps/?panorama%5Bpoint%5D={lon},{lat}'],
-    ['mapillary', 'Mplr', 'Mapillary Photos', false,
-      'https://a.mapillary.com/v3/images?client_id={id}&closeto={lon},{lat}&lookat={lon},{lat}'],
+    ['mapillary', 'Mplr', 'Mapillary Photos', false,'https://graph.mapillary.com/images?access_token={id}&bbox={lon1},{lat1},{lon2},{lat2}&limit=10'],
     ['openstreetcam', 'OSC', 'OpenStreetCam', false,
       'lat={lat}&lng={lon}&distance=50'],
     ['mosatlas', 'Мос', 'Панорамы из Атласа Москвы',
@@ -132,9 +135,22 @@ L.StreetView = L.Control.extend({
       last = b;
 
       var tmpl = b._template;
+	  var latitude1 = center.lat - 0.0002;
+	  var longitude1 = center.lng - 0.0002;
+	  var latitude2 = center.lat + 0.0002;
+	  var longitude2 = center.lng + 0.0002;
+	  if (this._buttons[i].title == 'Mapillary Photos') {
+			tmpl = tmpl
+			.replace(/{lon1}/g, L.Util.formatNum(longitude1, 6))
+			.replace(/{lat1}/g, L.Util.formatNum(latitude1, 6))
+			.replace(/{lon2}/g, L.Util.formatNum(longitude2, 6))
+			.replace(/{lat2}/g, L.Util.formatNum(latitude2, 6));
+	  }
+	  else {
       tmpl = tmpl
         .replace(/{lon}/g, L.Util.formatNum(center.lng, 6))
         .replace(/{lat}/g, L.Util.formatNum(center.lat, 6));
+	  }
       if (b._needUrl)
         b.href = tmpl;
       else
