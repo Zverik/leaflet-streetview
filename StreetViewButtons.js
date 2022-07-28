@@ -1,7 +1,6 @@
-/*  
-	// Please get your own mapillary access_token 
-    L.streetView({position: 'topleft', mapillaryId: {acces_token}}).addTo(map);
-*/																	    
+// Please get your own mapillary access_token 
+// L.streetView({position: 'topleft', mapillaryId: {acces_token}}).addTo(map);
+																	    
 L.StreetView = L.Control.extend({
   options: {
     google: true,
