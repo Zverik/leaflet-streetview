@@ -141,25 +141,13 @@ L.StreetView = L.Control.extend({
         this._container.removeChild(b);
         return;
       }
-	  last = b;
+      last = b;
+
       var tmpl = b._template;
-	  
-	  if (this._buttons[i].title == 'Mapillary Photos') {
-	  	var latitude1 = center.lat - 0.0002;
-		var longitude1 = center.lng - 0.0002;
-		var latitude2 = center.lat + 0.0002;
-		var longitude2 = center.lng + 0.0002;
-		tmpl = tmpl
-			.replace(/{lon1}/g, L.Util.formatNum(longitude1, 6))
-			.replace(/{lat1}/g, L.Util.formatNum(latitude1, 6))
-			.replace(/{lon2}/g, L.Util.formatNum(longitude2, 6))
-			.replace(/{lat2}/g, L.Util.formatNum(latitude2, 6));
-	  }
-	  else {
       tmpl = tmpl
         .replace(/{lon}/g, L.Util.formatNum(center.lng, 6))
         .replace(/{lat}/g, L.Util.formatNum(center.lat, 6));
-	  }
+
       if (b._needUrl)
         b.href = tmpl;
       else
